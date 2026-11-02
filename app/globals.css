@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Light theme (default) */
+  :root {
+    --canvas: 250 250 250; /* near-white page */
+    --surface: 255 255 255; /* cards / pills */
+    --surface-hover: 244 244 245;
+    --line: 228 228 231; /* borders / dividers */
+    --ink: 24 24 27; /* primary text */
+    --muted: 82 82 91; /* secondary text */
+    --faint: 161 161 170; /* tertiary text */
+    --accent: 99 102 241; /* indigo accent */
+  }
+
+  /* Dark theme, matches the reference's near-black canvas */
+  .dark {
+    --canvas: 9 9 11;
+    --surface: 24 24 27;
+    --surface-hover: 39 39 42;
+    --line: 55 55 62; /* visible card edges against the star field */
+    --ink: 244 244 245;
+    --muted: 205 205 212; /* ~11:1 on surface, readable body copy */
+    --faint: 155 155 166; /* ~6.5:1 on surface, passes AA for small labels */
+    --accent: 129 140 248;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: rgb(var(--canvas));
+    color: rgb(var(--ink));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent) / 0.25);
+  }
+}
+
+@layer utilities {
+  /* Flowing gradient text for the name / accents */
+  .text-gradient {
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--ink)),
+      rgb(var(--accent)),
+      #d946ef,
+      rgb(var(--ink))
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 6s linear infinite;
+  }
+
+  /* Fine grid texture used behind the hero */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(var(--line) / 0.6) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--line) / 0.6) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* Card lift gets a soft accent glow on hover */
+  .glow-on-hover:hover {
+    box-shadow: 0 10px 40px -12px rgb(var(--accent) / 0.35);
+  }
+
+  /* Fade the left/right edges of the scrolling marquee */
+  .mask-fade-x {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+  }
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora-a,
+  .animate-aurora-b,
+  .animate-float,
+  .animate-spin-slow,
+  .animate-marquee,
+  .text-gradient {
+    animation: none !important;
+  }
+}
+
+/* Thin, subtle scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--line));
+  border-radius: 9999px;
+  border: 2px solid rgb(var(--canvas));
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--faint));
+}
